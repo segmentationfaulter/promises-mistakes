@@ -124,7 +124,7 @@ then(null, errorHandler)
 ```js
 somePromise()
 .then(successHandler)
-catch(errorHandler)
+.catch(errorHandler)
 ```
 
 ---
@@ -133,6 +133,7 @@ catch(errorHandler)
 
 ```js
 function executeSequentially(promises) {
+  // the argument passed is an array of promises
   var result = Promise.resolve();
   promises.forEach(function (promise) {
     result = result.then(promise);
@@ -147,6 +148,7 @@ function executeSequentially(promises) {
 
 ```js
 function executeSequentially(promiseFactories) {
+  // the argument passed is an array of promise factories
   var result = Promise.resolve();
   promiseFactories.forEach(function (promiseFactory) {
     result = result.then(promiseFactory);
@@ -156,3 +158,12 @@ function executeSequentially(promiseFactories) {
 ```
 
 ---
+
+#### Mistake#7: Promises fall through
+
+What will get logged? `foo` or `bar`?
+```js
+Promise.resolve('foo').then(Promise.resolve('bar')).then(function (result) {
+  console.log(result);
+});
+```
