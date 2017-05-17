@@ -6,8 +6,8 @@
 
 ```js
 
-// Please note that both doSomething and doSomethingElse are function
-// which return promises
+// Please note that both doSomething and doSomethingElse
+// are functions which return promises
 
 doSomething().then(function () {
   return doSomethingElse();
@@ -163,7 +163,9 @@ function executeSequentially(promiseFactories) {
 
 What will get logged? `foo` or `bar`?
 ```js
-Promise.resolve('foo').then(Promise.resolve('bar')).then(console.log);
+Promise.resolve('foo')
+.then(Promise.resolve('bar'))
+.then(console.log);
 ```
 
 ---
