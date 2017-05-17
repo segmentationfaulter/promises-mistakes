@@ -2,7 +2,7 @@
 
 ---
 
-### Quiz: How do these variations work?
+#### Quiz: How do these variations work?
 
 ```js
 doSomething().then(function () {
@@ -20,7 +20,7 @@ doSomething().then(doSomethingElse);
 
 ---
 
-### Mistake#1: The promisey callback hell
+#### Mistake#1: The promisey callback hell
 
 ```js
 remotedb.allDocs({
@@ -40,7 +40,7 @@ remotedb.allDocs({
 
 ---
 
-### Better compose promises
+#### Better compose promises
 
 ```js
 remotedb.allDocs(...).then(function (resultOfAllDocs) {
@@ -56,7 +56,7 @@ remotedb.allDocs(...).then(function (resultOfAllDocs) {
 
 ---
 
-### Mistake#2: Can promises switch between async/sync flow?
+#### Mistake#2: Can promises switch between async/sync flow?
 
 ```js
 const ourPromise = function() {
@@ -71,7 +71,7 @@ Question: What will get logged first? `3` or `4`?
 
 ---
 
-### Mistake#3: How to iterate?
+#### Mistake#3: How to iterate?
 
 ```js
 // I want to remove() all docs
@@ -86,7 +86,7 @@ db.allDocs({include_docs: true}).then(function (result) {
 
 ---
 
-### `Promise.all` to rescue
+#### `Promise.all` to rescue
 
 ```js
 db.allDocs({include_docs: true}).then(function (result) {
@@ -100,7 +100,7 @@ db.allDocs({include_docs: true}).then(function (result) {
 
 ---
 
-### Mistake#4: How to chain promises?
+#### Mistake#4: How to chain promises?
 
 ```js
 somePromise().then(function () {
@@ -109,3 +109,17 @@ somePromise().then(function () {
   // is someOtherPromise resolved here?
 });
 ```
+
+---
+
+#### Causing side effects will not chain, use `return` statement instead
+
+```js
+somePromise().then(function () {
+  someOtherPromise();
+}).then(function () {
+  // is someOtherPromise resolved here?
+});
+```
+
+---
