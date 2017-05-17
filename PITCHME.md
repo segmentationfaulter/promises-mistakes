@@ -23,17 +23,13 @@ doSomething().then(doSomethingElse);
 #### Mistake#1: The promisey callback hell
 
 ```js
-remotedb.allDocs({
-  include_docs: true,
-  attachments: true
-}).then(function (result) {
-  var docs = result.rows;
-  docs.forEach(function(element) {
-    localdb.put(element.doc).then(function(response) {
-      alert("Pulled doc with id " + element.doc._id + " and added to local db.");
+remotedb.getAllDocs().then(function (docs) {
+  docs.forEach(function(document) {
+    localdb.put(document).then(function(response) {
+      alert("Document stored successfully with ID" + document._id);
     }).catch(function (err) {
       if (err.name == 'conflict') {
-        localdb.get(element.doc._id).then(function (resp) {
+        localdb.get(document._id).then(function (resp) {
           localdb.remove(resp._id, resp._rev).then(function (resp) {
 // et cetera...
 ```
@@ -43,7 +39,7 @@ remotedb.allDocs({
 #### Better compose promises
 
 ```js
-remotedb.allDocs(...).then(function (resultOfAllDocs) {
+remotedb.getAllDocs().then(function (resultOfAllDocs) {
   return localdb.put(...);
 }).then(function (resultOfPut) {
   return localdb.get(...);
@@ -60,7 +56,7 @@ remotedb.allDocs(...).then(function (resultOfAllDocs) {
 
 ```js
 const ourPromise = function() {
-  return new Promise(resolve => resolve(3))
+  return Promise.resolve(3)
 }
 
 ourPromise().then(console.log)
@@ -71,13 +67,13 @@ Question: What will get logged first? `3` or `4`?
 
 ---
 
-#### Mistake#3: How to iterate?
+#### Mistake#3: How to iterate over promises?
 
 ```js
 // I want to remove() all docs
-db.allDocs({include_docs: true}).then(function (result) {
-  result.rows.forEach(function (row) {
-    db.remove(row.doc);
+db.getAllDocs().then(function (docs) {
+  docs.forEach(function (document) {
+    db.remove(document);
   });
 }).then(function () {
   // Are all documents removed here???
@@ -86,12 +82,12 @@ db.allDocs({include_docs: true}).then(function (result) {
 
 ---
 
-#### `Promise.all` to rescue
+Traditional looping constructs will not work, we will need `Promise.all`
 
 ```js
-db.allDocs({include_docs: true}).then(function (result) {
-  return Promise.all(result.rows.map(function (row) {
-    return db.remove(row.doc);
+db.getAllDocs().then(function (docs) {
+  return Promise.all(docs.map(function (document) {
+    return db.remove(document);
   }));
 }).then(function (arrayOfResults) {
   // All docs have really been removed() now!
@@ -112,13 +108,14 @@ somePromise().then(function () {
 
 ---
 
-#### Causing side effects will not chain, use `return` statement instead
+Causing side effects will not chain, use `return` statement instead
 
 ```js
 somePromise().then(function () {
-  someOtherPromise();
+  return someOtherPromise();
 }).then(function () {
   // is someOtherPromise resolved here?
+  // Yes!!!
 });
 ```
 
