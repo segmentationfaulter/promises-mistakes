@@ -2,7 +2,7 @@
 
 ---
 
-# Mistake#1: The promisey callback hell
+### Mistake#1: The promisey callback hell
 
 ```js
 remotedb.allDocs({
@@ -22,7 +22,7 @@ remotedb.allDocs({
 
 ---
 
-# Better compose promises
+### Better compose promises
 
 ```js
 remotedb.allDocs(...).then(function (resultOfAllDocs) {
@@ -38,7 +38,7 @@ remotedb.allDocs(...).then(function (resultOfAllDocs) {
 
 ---
 
-# Mistake#2: How to iterate?
+### Mistake#2: How to iterate?
 
 ```js
 // I want to remove() all docs
@@ -51,7 +51,9 @@ db.allDocs({include_docs: true}).then(function (result) {
 });
 ```
 
-# `Promise.all` to rescue
+---
+
+### `Promise.all` to rescue
 
 ```js
 db.allDocs({include_docs: true}).then(function (result) {
@@ -62,3 +64,5 @@ db.allDocs({include_docs: true}).then(function (result) {
   // All docs have really been removed() now!
 });
 ```
+
+---
