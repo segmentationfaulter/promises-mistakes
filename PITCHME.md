@@ -2,7 +2,7 @@
 
 ---
 
-# The promisey callback hell
+# Mistake#1: The promisey callback hell
 
 ```js
 remotedb.allDocs({
@@ -33,5 +33,32 @@ remotedb.allDocs(...).then(function (resultOfAllDocs) {
   return localdb.put(...);
 }).catch(function (err) {
   console.log(err);
+});
+```
+
+---
+
+# Mistake#2: How to iterate?
+
+```js
+// I want to remove() all docs
+db.allDocs({include_docs: true}).then(function (result) {
+  result.rows.forEach(function (row) {
+    db.remove(row.doc);  
+  });
+}).then(function () {
+  // Are all documents removed here???
+});
+```
+
+# `Promise.all` to rescue
+
+```js
+db.allDocs({include_docs: true}).then(function (result) {
+  return Promise.all(result.rows.map(function (row) {
+    return db.remove(row.doc);
+  }));
+}).then(function (arrayOfResults) {
+  // All docs have really been removed() now!
 });
 ```
