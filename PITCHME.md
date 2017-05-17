@@ -161,13 +161,13 @@ function executeSequentially(promiseFactories) {
 
 #### Mistake#7: Promises fall through
 
-What will get logged? `foo` or `bar`?
-
 ```js
 Promise.resolve('foo')
 .then(Promise.resolve('bar'))
 .then(console.log);
 ```
+
+What will get logged? `foo` or `bar`?
 
 ---
 
