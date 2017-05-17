@@ -49,8 +49,7 @@ somePromise().then(function () {
 #### Mistake#2: The promisey callback hell
 
 ```js
-getUserIdByEmail('saqib@example.com')
-.then(function(userId) {
+getUserIdByEmail('saqib@example.com').then(function(userId) {
   getUserPostsById(userId)
   .then(posts => // use posts here)
 })
