@@ -53,13 +53,13 @@ somePromise().then(function () {
 
 ```js
 getUserIdByEmail('saqib@example.com').then(function(userId) {
-  getUserPostsById(userId).then(posts => // use posts here)
+  getUserPostsById(userId).then(posts => /* use posts here */)
 })
 ```
 
 ---
 
-#### Better compose promises
+#### Better chain promises
 
 ```js
 getUserIdByEmail('saqib@example.com')
@@ -78,7 +78,7 @@ Promise.resolve(1).then(console.log)
 console.log(2)
 ```
 
-Question: What will get logged first? `1` or `2`?
+What will get logged first? `1` or `2`?
 
 ---
 
@@ -113,7 +113,7 @@ db.getAllDocs().then(function (docs) {
 
 #### Mistake#5
 
-Are these the same codes?
+Are these the same?
 
 ```js
 somePromise()
@@ -225,9 +225,16 @@ nothing goes here, simply falls through
                   |------------------|
 ```
 
+---
+
 #### Puzzle#4 Answer
 
 ```js
+doSomething().then(doSomethingElse)
+  .then(finalHandler);
+```
+
+```
 doSomething
 |-----------------|
                   doSomethingElse(resultOfDoSomething)
