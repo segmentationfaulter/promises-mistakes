@@ -56,7 +56,22 @@ remotedb.allDocs(...).then(function (resultOfAllDocs) {
 
 ---
 
-### Mistake#2: How to iterate?
+### Mistake#2: Can promises switch between async/sync flow?
+
+```js
+const ourPromise = function() {
+  return new Promise(resolve => resolve(3))
+}
+
+ourPromise().then(console.log)
+console.log(4)
+```
+
+Question: What will get logged first? `3` or `4`?
+
+---
+
+### Mistake#3: How to iterate?
 
 ```js
 // I want to remove() all docs
@@ -85,7 +100,7 @@ db.allDocs({include_docs: true}).then(function (result) {
 
 ---
 
-### Mistake#3: How to chain promises?
+### Mistake#4: How to chain promises?
 
 ```js
 somePromise().then(function () {
