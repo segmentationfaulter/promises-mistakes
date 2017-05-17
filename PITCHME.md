@@ -20,18 +20,40 @@ doSomething().then(doSomethingElse);
 
 ---
 
-#### Mistake#1: The promisey callback hell
+#### Mistake#1: How to chain promises?
 
 ```js
-remotedb.getAllDocs().then(function (docs) {
-  docs.forEach(function(document) {
-    localdb.put(document).then(function(response) {
-      alert("Document stored successfully with ID" + document._id);
-    }).catch(function (err) {
-      if (err.name == 'conflict') {
-        localdb.get(document._id).then(function (resp) {
-          localdb.remove(resp._id, resp._rev).then(function (resp) {
-// et cetera...
+somePromise().then(function () {
+  someOtherPromise();
+}).then(function () {
+  // is someOtherPromise resolved here?
+});
+```
+
+---
+
+Causing side effects will not chain, use `return` statement instead
+
+```js
+somePromise().then(function () {
+  return someOtherPromise();
+}).then(function () {
+  // is someOtherPromise resolved here?
+  // Yes!!!
+});
+```
+
+---
+
+
+#### Mistake#2: The promisey callback hell
+
+```js
+getUserIdByEmail('saqib@example.com')
+.then(function(userId) {
+  getUserPostsById(userId)
+  .then(posts => // use posts here)
+})
 ```
 
 ---
@@ -39,20 +61,16 @@ remotedb.getAllDocs().then(function (docs) {
 #### Better compose promises
 
 ```js
-remotedb.getAllDocs().then(function (resultOfAllDocs) {
-  return localdb.put(...);
-}).then(function (resultOfPut) {
-  return localdb.get(...);
-}).then(function (resultOfGet) {
-  return localdb.put(...);
-}).catch(function (err) {
-  console.log(err);
-});
+getUserIdByEmail('saqib@example.com')
+.then(function(userId) {
+  return getUserPostsById(userId)
+})
+.then(posts => // use posts here)
 ```
 
 ---
 
-#### Mistake#2: Can promises switch between async/sync flow?
+#### Mistake#3: Can promises switch between async/sync flow?
 
 ```js
 const ourPromise = function() {
@@ -67,7 +85,7 @@ Question: What will get logged first? `3` or `4`?
 
 ---
 
-#### Mistake#3: How to iterate over promises?
+#### Mistake#4: How to iterate over promises?
 
 ```js
 // I want to remove() all docs
@@ -91,31 +109,6 @@ db.getAllDocs().then(function (docs) {
   }));
 }).then(function (arrayOfResults) {
   // All docs have really been removed() now!
-});
-```
-
----
-
-#### Mistake#4: How to chain promises?
-
-```js
-somePromise().then(function () {
-  someOtherPromise();
-}).then(function () {
-  // is someOtherPromise resolved here?
-});
-```
-
----
-
-Causing side effects will not chain, use `return` statement instead
-
-```js
-somePromise().then(function () {
-  return someOtherPromise();
-}).then(function () {
-  // is someOtherPromise resolved here?
-  // Yes!!!
 });
 ```
 
