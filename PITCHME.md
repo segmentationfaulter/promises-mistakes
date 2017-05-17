@@ -2,7 +2,7 @@
 
 ---
 
-#### The promisey callback hell
+### The promisey callback hell
 
 ```js
 remotedb.allDocs({
@@ -22,7 +22,7 @@ remotedb.allDocs({
 
 ---
 
-#### Better compose promises
+### Better compose promises
 
 ```js
 remotedb.allDocs(...).then(function (resultOfAllDocs) {
