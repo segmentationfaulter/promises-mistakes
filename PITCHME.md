@@ -120,3 +120,49 @@ somePromise().then(function () {
 ```
 
 ---
+
+#### Mistake#5
+
+Are these the same codes?
+
+```js
+somePromise()
+.then(successHandler)
+then(null, errorHandler)
+```
+
+```js
+somePromise()
+.then(successHandler)
+catch(errorHandler)
+```
+
+---
+
+#### Mistak#6: Using promises to sequentially make async calls
+
+```js
+function executeSequentially(promises) {
+  var result = Promise.resolve();
+  promises.forEach(function (promise) {
+    result = result.then(promise);
+  });
+  return result;
+}
+```
+
+---
+
+#### Use promise factories instead
+
+```js
+function executeSequentially(promiseFactories) {
+  var result = Promise.resolve();
+  promiseFactories.forEach(function (promiseFactory) {
+    result = result.then(promiseFactory);
+  });
+  return result;
+}
+```
+
+---
