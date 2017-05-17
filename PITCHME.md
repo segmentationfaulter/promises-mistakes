@@ -162,6 +162,7 @@ function executeSequentially(promiseFactories) {
 #### Mistake#7: Promises fall through
 
 What will get logged? `foo` or `bar`?
+
 ```js
 Promise.resolve('foo')
 .then(Promise.resolve('bar'))
@@ -181,10 +182,56 @@ doSomething().then(function () {
 ```
 doSomething
 |-----------------|
-                  doSomethingElse(undefined)
+                  doSomethingElse(resultOfDoSomething)
                   |------------------|
                                      finalHandler(resultOfDoSomethingElse)
                                      |------------------|
 ```
 
 ---
+
+#### Puzzle#2 Answer
+
+```js
+doSomething().then(function () {
+  doSomethingElse();
+}).then(finalHandler);
+```
+
+```
+doSomething
+|-----------------|
+                  doSomethingElse(undefined)
+                  |------------------|
+                  finalHandler(undefined)
+                  |------------------|
+```
+
+---
+
+#### Puzzle#3 Answer
+
+```js
+doSomething().then(doSomethingElse())
+  .then(finalHandler);
+```
+
+```
+doSomething
+|-----------------|
+nothing goes here, simply falls through
+|---------------------------------|
+                  finalHandler(resultOfDoSomething)
+                  |------------------|
+```
+
+#### Puzzle#4 Answer
+
+```js
+doSomething
+|-----------------|
+                  doSomethingElse(resultOfDoSomething)
+                  |------------------|
+                                     finalHandler(resultOfDoSomethingElse)
+                                     |------------------|
+```
