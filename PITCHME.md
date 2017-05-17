@@ -2,9 +2,13 @@
 
 ---
 
-#### Quiz: How do these variations work?
+#### Goal: Learn how do these work?
 
 ```js
+
+// Please note that both doSomething and doSomethingElse are function
+// which return promises
+
 doSomething().then(function () {
   return doSomethingElse();
 });
@@ -26,7 +30,7 @@ doSomething().then(doSomethingElse);
 somePromise().then(function () {
   someOtherPromise();
 }).then(function () {
-  // is someOtherPromise resolved here?
+  // is the result of someOtherPromise available here?
 });
 ```
 
@@ -38,7 +42,7 @@ Causing side effects will not chain, use `return` statement instead
 somePromise().then(function () {
   return someOtherPromise();
 }).then(function () {
-  // is someOtherPromise resolved here?
+  // is the result of someOtherPromise available here?
   // Yes!!!
 });
 ```
@@ -70,11 +74,11 @@ getUserIdByEmail('saqib@example.com')
 #### Mistake#3: Can promises switch between async/sync flow?
 
 ```js
-Promise.resolve(3).then(console.log)
-console.log(4)
+Promise.resolve(1).then(console.log)
+console.log(2)
 ```
 
-Question: What will get logged first? `3` or `4`?
+Question: What will get logged first? `1` or `2`?
 
 ---
 
@@ -159,7 +163,23 @@ function executeSequentially(promiseFactories) {
 
 What will get logged? `foo` or `bar`?
 ```js
-Promise.resolve('foo').then(Promise.resolve('bar')).then(function (result) {
-  console.log(result);
-});
+Promise.resolve('foo').then(Promise.resolve('bar')).then(console.log);
 ```
+
+---
+
+#### Puzzle#1 Answer
+
+```js
+doSomething().then(function () {
+  return doSomethingElse();
+}).then(finalHandler);
+```
+
+doSomething
+|-----------------|
+                  doSomethingElse(undefined)
+                  |------------------|
+                                     finalHandler(resultOfDoSomethingElse)
+                                     |------------------|
+---
