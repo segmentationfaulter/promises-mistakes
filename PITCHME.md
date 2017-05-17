@@ -118,7 +118,7 @@ Are these the same codes?
 ```js
 somePromise()
 .then(successHandler)
-then(null, errorHandler)
+.then(null, errorHandler)
 ```
 
 ```js
@@ -178,10 +178,13 @@ doSomething().then(function () {
 }).then(finalHandler);
 ```
 
+```
 doSomething
 |-----------------|
                   doSomethingElse(undefined)
                   |------------------|
                                      finalHandler(resultOfDoSomethingElse)
                                      |------------------|
+```
+
 ---
