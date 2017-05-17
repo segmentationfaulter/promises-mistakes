@@ -2,6 +2,24 @@
 
 ---
 
+### Quiz: How do these variations work?
+
+```js
+doSomething().then(function () {
+  return doSomethingElse();
+});
+
+doSomething().then(function () {
+  doSomethingElse();
+});
+
+doSomething().then(doSomethingElse());
+
+doSomething().then(doSomethingElse);
+```
+
+---
+
 ### Mistake#1: The promisey callback hell
 
 ```js
@@ -44,7 +62,7 @@ remotedb.allDocs(...).then(function (resultOfAllDocs) {
 // I want to remove() all docs
 db.allDocs({include_docs: true}).then(function (result) {
   result.rows.forEach(function (row) {
-    db.remove(row.doc);  
+    db.remove(row.doc);
   });
 }).then(function () {
   // Are all documents removed here???
@@ -66,3 +84,13 @@ db.allDocs({include_docs: true}).then(function (result) {
 ```
 
 ---
+
+### Mistake#3: How to chain promises?
+
+```js
+somePromise().then(function () {
+  someOtherPromise();
+}).then(function () {
+  // is someOtherPromise resolved here?
+});
+```
