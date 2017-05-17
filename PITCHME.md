@@ -70,11 +70,7 @@ getUserIdByEmail('saqib@example.com')
 #### Mistake#3: Can promises switch between async/sync flow?
 
 ```js
-const ourPromise = function() {
-  return Promise.resolve(3)
-}
-
-ourPromise().then(console.log)
+Promise.resolve(3).then(console.log)
 console.log(4)
 ```
 
